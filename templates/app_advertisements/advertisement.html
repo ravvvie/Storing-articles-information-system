@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <ul class="nav nav-pills sticky-top bg-white nav-fill">
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'main-page' %}">
+        <span style="font-weight: bold;">Главная</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'adv-post' %}">
+        <span style="font-weight: bold;">Написать статью</span>
+      </a>
+    </li>
+    {% if not user.is_authenticated %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'register' %}">
+        <span style="font-weight: bold;">Регистрация</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'login' %}">
+        <span style="font-weight: bold;">Войти</span>
+      </a>
+    </li>
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'profile' %}">
+        <span style="font-weight: bold;">Профиль</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'logout' %}">
+        <span style="font-weight: bold;">Выйти</span>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+    <div id="carouselExampleControls" class="carousel slide bg-primary" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      {% for img in article.images.all %}
+        {% if img == article.images.first %}
+          <div class="carousel-item active" style="max-height: 500px;">
+            <img src="{{ img.image.url }}" class="mx-auto d-block w-33" alt="...">
+          </div>
+        {% else %}
+          <div class="carousel-item" style="max-height: 500px;">
+            <img src="{{ img.image.url }}" class="mx-auto d-block w-33" alt="...">
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Предыдущий</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Следующий</span>
+    </button>
+  </div>
+  <div style="margin-top: 40px" class="container" align="center">
+    <div class="display-2">
+      <span class="badge bg-primary">{{ article.title }}</span>
+    </div>
+  </div>
+  <div align="center">
+    <div class="card mb-2" style="max-width: 1200px; margin-top: 20px;">
+      <div class="row g-0">
+        <div class="col">
+          <div class="card-body">
+            <p class="card-text">
+              {{ article.description }}
+            </p>
+            <span>Автор: {{ article.author }}</span>
+            <p class="card-text"><small class="text-muted">Размещено: {{ article.created_at }}</small></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
